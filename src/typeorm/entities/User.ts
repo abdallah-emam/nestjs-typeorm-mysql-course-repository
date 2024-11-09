@@ -5,6 +5,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Post } from './Post';
 import { Profile } from './Profile';
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   authStrategy: string;
+
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: Date;
 
   @OneToOne(() => Profile, (profile) => profile.user, { cascade: true })
   profile: Profile;

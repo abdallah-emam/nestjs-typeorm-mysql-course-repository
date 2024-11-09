@@ -34,16 +34,9 @@ export class UsersService {
   }
 
   async createUser(userDetails: CreateUserDto) {
-    const newProfile = Profile.createProfile(
-      userDetails.firstName,
-      userDetails.lastName,
-      userDetails.age,
-      userDetails.dob,
-    );
     const newUser = new User();
     newUser.username = userDetails.username;
     newUser.password = userDetails.password;
-    newUser.profile = newProfile;
     newUser.createdAt = new Date();
 
     const user = await newUser.save();

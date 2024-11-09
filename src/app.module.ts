@@ -14,13 +14,13 @@ import { UsersModule } from './users/users.module';
       database: 'nest_app',
       username: 'sa',
       password: 'myPassw0rd',
-      entities: [__dirname + '/**/*{.ts,.js}'], // Autoload entities
+      entities: ['dist/**/entities/*.{ts,js}'], // Autoload entities
       synchronize: false, // Set to false for manual migrations
       // autoLoadEntities: true,
       extra: {
         trustServerCertificate: true,
       },
-      migrations: ['dist/db/migrations/*.{js,ts}'],
+      migrations: ['dist/db/**/*{.ts,.js}'],
     }),
 
     UsersModule,

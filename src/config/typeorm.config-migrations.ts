@@ -16,6 +16,6 @@ export default new DataSource({
     trustServerCertificate: true,
   },
   entities: ['dist/**/entities/*.{ts,js}'], // Path to your entities
-  // synchronize: false,
-  migrations: ['dist/db/migrations/**/*{.ts,.js}'],
+  synchronize: false,
+  migrations: ['dist/db/**/*{.ts,.js}'],
 });
