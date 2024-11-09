@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { Repository } from 'typeorm';
 import { Post } from '../../../typeorm/entities/Post';
 import { Profile } from '../../../typeorm/entities/Profile';
 import { User } from '../../../typeorm/entities/User';
 import {
-  CreateUserParams,
   CreateUserPostParams,
   CreateUserProfileParams,
   UpdateUserParams,
@@ -21,14 +21,34 @@ export class UsersService {
 
   findUsers() {
     return this.userRepository.find({ relations: ['profile', 'posts'] });
+
+    // i want to return
   }
 
-  createUser(userDetails: CreateUserParams) {
-    const newUser = this.userRepository.create({
-      ...userDetails,
-      createdAt: new Date(),
+  findUser(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: { profile: true, posts: true },
+      // relations: ['profile', 'posts']
     });
-    return this.userRepository.save(newUser);
+  }
+
+  async createUser(userDetails: CreateUserDto) {
+    const newProfile = Profile.createProfile(
+      userDetails.firstName,
+      userDetails.lastName,
+      userDetails.age,
+      userDetails.dob,
+    );
+    const newUser = new User();
+    newUser.username = userDetails.username;
+    newUser.password = userDetails.password;
+    newUser.profile = newProfile;
+    newUser.createdAt = new Date();
+
+    const user = await newUser.save();
+    console.log('🚀 ~ UsersService ~ createUser ~ user:', user);
+    return user;
   }
 
   updateUser(id: number, updateUserDetails: UpdateUserParams) {
